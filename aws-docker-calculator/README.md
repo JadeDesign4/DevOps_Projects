@@ -76,8 +76,8 @@ resource "aws_instance" "calculator_server" {
               apt-get install -y docker.io
               systemctl start docker
               systemctl enable docker
-              docker pull gabby1000/calculator-web:v1
-              docker run -d -p 80:80 --name my-calculator gabby1000/calculator-web:v1
+              docker pull YourDockerHubAcct/calculator-web:v1
+              docker run -d -p 80:80 --name my-calculator YourDockerHubAcct/calculator-web:v1
               EOF
 
   tags = {
@@ -95,11 +95,11 @@ output "public_ip" {
 ## 🛠️ Part 4: Terminal Command Workflow (The Cheatsheet)## 1. Build and Push Your Image
 
 # Log into your Docker Hub account
-docker login -u gabby1000
+docker login -u YourDockerHubAcct
 # Build the container image (Don't forget the dot at the end)
-docker build -t gabby1000/calculator-web:v1 .
+docker build -t YourDockerHubAcct/calculator-web:v1 .
 # Push the container image up to Docker Hub
-docker push gabby1000/calculator-web:v1
+docker push YourDockerHubAcct/calculator-web:v1
 
 ## 2. Connect Your Terminal to AWS
 
