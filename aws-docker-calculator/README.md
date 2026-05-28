@@ -6,12 +6,12 @@
 Your project folder should look exactly like this:
 
 aws-docker-calculator/
-├── calculator-app/        # Folder containing your web files
+├── calculator-app/
 │   ├── index.html
 │   ├── script.js
 │   └── style.css
-├── Dockerfile             # Builds the container image
-└── main.tf                # Defines your AWS Cloud Infrastructure
+├── Dockerfile
+└── main.tf
 
 ------------------------------
 ## 🐳 Part 2: The Container Files## The Dockerfile
