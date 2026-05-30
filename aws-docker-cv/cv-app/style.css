@@ -1,0 +1,103 @@
+/* General Resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    max-width: 900px;
+    margin: 20px auto;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    min-height: 100vh;
+}
+
+/* Left Panel (Sidebar) */
+.left-panel {
+    background-color: #2c3e50;
+    color: white;
+    width: 30%;
+    padding: 30px;
+}
+
+.profile-img img {
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid #3498db;
+    margin-bottom: 20px;
+}
+
+.left-panel h3 {
+    border-bottom: 1px solid #3498db;
+    margin: 20px 0 10px;
+    padding-bottom: 5px;
+}
+
+.left-panel ul {
+    list-style: none;
+}
+
+.left-panel a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+/* Right Panel (Main Content) */
+.right-panel {
+    width: 70%;
+    padding: 40px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+}
+
+header h2 {
+    color: #3498db;
+    font-weight: 300;
+}
+
+section {
+    margin-top: 30px;
+}
+
+h3 {
+    text-transform: uppercase;
+    color: #2c3e50;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 15px;
+}
+
+.entry {
+    margin-bottom: 20px;
+}
+
+.entry h4 {
+    margin-bottom: 5px;
+}
+
+.entry span {
+    font-size: 0.9rem;
+    color: #777;
+    font-style: italic;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .left-panel, .right-panel {
+        width: 100%;
+    }
+}
