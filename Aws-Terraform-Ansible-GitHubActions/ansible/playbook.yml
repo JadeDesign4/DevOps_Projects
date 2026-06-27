@@ -1,0 +1,69 @@
+---
+- name: Deploy OS Dashboard and Secure with HTTPS
+  hosts: dashboard_hosts
+  become: true
+  vars:
+    domain_name: "visionos.name.ng"
+    cert_email: "gabrielakib35@gmail.com"
+
+  tasks:
+    - name: Update apt system package cache
+      apt:
+        update_cache: yes
+
+    - name: Install dependencies for Docker and SSL
+      apt:
+        name:
+          - docker.io
+          - python3-pip
+          - nginx
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    - name: Ensure Docker service is running and enabled
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    # 1. Logs into your private registry directly from the EC2 target machine
+    - name: Authenticate to private Docker Hub registry
+      docker_login:
+        username: "{{ lookup('env', 'DOCKER_USERNAME') }}"
+        password: "{{ lookup('env', 'DOCKER_PASSWORD') }}"
+      no_log: true # Keeps your authorization tokens out of visible log screen dumps
+
+    - name: Run Dashboard Container from Registry
+      shell: |
+        docker pull jadedesign4/private:os-dashboard
+        docker stop os-dashboard || true
+        docker rm os-dashboard || true
+        docker run -d --name os-dashboard --restart unless-stopped -p 127.0.0.1:3000:3000 jadedesign4/private:os-dashboard
+
+    - name: Configure Nginx as a Reverse Proxy for Docker container
+      copy:
+        dest: /etc/nginx/sites-available/default
+        content: |
+          server {
+              listen 80;
+              server_name {{ domain_name }};
+
+              location / {
+                  proxy_pass http://127.0.0.1:3000;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+              }
+          }
+
+    - name: Reload Nginx to apply reverse proxy updates
+      systemd:
+        name: nginx
+        state: reloaded
+
+    - name: Obtain and install Let's Encrypt Free SSL Certificate
+      command: >
+        certbot --nginx -d {{ domain_name }}
+        --non-interactive --agree-tos --email {{ cert_email }}
+      register: certbot_output
+      changed_when: "'Keep the existing certificate' not in certbot_output.stdout"
