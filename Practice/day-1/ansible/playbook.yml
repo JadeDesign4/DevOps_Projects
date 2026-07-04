@@ -1,0 +1,42 @@
+---
+- hosts: aws
+  become: yes
+
+  vars:
+    docker_image: gabby1000/minipay-ui:latest
+    cert_email: "gabrielakib35@gmail.com"
+
+  - tasks:
+      - name: Update cache
+        apt:
+          update_cache: yes
+
+      - name: Install required Packages
+          apt:
+            name:
+              - docker.io
+              - nginx
+              - certbot
+              - python3-certbot-nginx
+              - python3-pip
+            state: present
+
+      - name: Start Docker
+        service:
+          name: docker
+          state: started
+          enabled: yes
+
+      - name: Pull Docker Image
+        community.docker.docker_image:
+          name: "{{ docker_image }}"
+          source: pull
+
+      - name: Run Docker Container
+        community.docker.docker_container:
+          name: minipay-ui
+          image: "{{ docker_image }}"
+          state: started
+          restart_policy: always
+          published_ports:
+            - "3000":"3000"

@@ -1,0 +1,13 @@
+# Provider.tf - Tell terraform which cloud provider to use
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.50" 
+    }
+  }
+}
+
+provider "aws" {
+  region = var.provider_region
+}
