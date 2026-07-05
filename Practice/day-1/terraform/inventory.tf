@@ -9,5 +9,5 @@ ansible_user=ubuntu
 ansible_ssh_private_key_file=~/.ssh/id_ed25519
 EOF
 
-  filename = "/home/gabby1000/DevOps/Practice/day-1/ansible/host.ini"
+  filename = "${path.module}/../ansible/host.ini"
 }

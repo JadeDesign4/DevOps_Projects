@@ -6,20 +6,23 @@
     docker_image: gabby1000/minipay-ui:latest
     cert_email: "gabrielakib35@gmail.com"
 
-  - tasks:
+  tasks:
       - name: Update cache
         apt:
           update_cache: yes
+          cache_valid_time: 3600
 
       - name: Install required Packages
-          apt:
-            name:
-              - docker.io
-              - nginx
-              - certbot
-              - python3-certbot-nginx
-              - python3-pip
-            state: present
+        apt:
+          name:
+            - docker.io
+            - nginx
+            - certbot
+            - python3-certbot-nginx
+            - python3-pip
+            - python3-docker
+          update_cache: yes
+          state: present
 
       - name: Start Docker
         service:
@@ -38,5 +41,7 @@
           image: "{{ docker_image }}"
           state: started
           restart_policy: always
+          recreate: true
+          pull: always
           published_ports:
-            - "3000":"3000"
+            - "3000:3000"
