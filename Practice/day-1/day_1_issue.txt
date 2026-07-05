@@ -1,0 +1,9 @@
+## The error made in today's run was the port mismatch between the docker image and ansible configuration
+ 
+Ansible was referencing ports: "3000:3000"
+   while the docker image was listening on port: "80"
+
+   Correction: Change the host & docker ports in the ansible playbook.yml
+	or
+  Create another ingress rule for port 3000 in "security.tf" & change the port docker is listening to
+  in the ansible "playbook.yml" file.
